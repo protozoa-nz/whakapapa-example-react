@@ -3,6 +3,8 @@
 
 it's a real sweet app
 
+[deployed here](http://protozoa.nz/whakapapa-example-react/)
+
 ## how
 
 ### install
