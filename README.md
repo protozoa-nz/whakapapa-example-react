@@ -3,11 +3,6 @@
 
 it's a real sweet app
 
-## Notes
-
-when there's no node at all, we should see a form
-Form only wants your name. (image link later)
-
 ## how
 
 ### install
