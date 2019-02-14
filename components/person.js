@@ -1,40 +1,27 @@
 import React, { Component } from 'react'
+import AddRelationship from './addRelationship'
+import Relationship from './relationship'
 
 class Person extends Component {
   constructor (props) {
     super(props)
-    this.state = { selected: false, id: props.id, people: props.people, unions: props.unions }
+    this.state = { selected: false }
   }
 
   render () {
-    var me = this.state.people.find((person) => person.id === this.state.id)
+    var me = this.props.people.find(person => person.id === this.props.id)
+    var myPartner = this.props.people.find(person => person.id === me.partnerId)
 
-    return <div>
+    return <div onClick={() => { this.setState({ selected: true }) }}>
       <h2>{me.name}</h2>
-      {me.partnerIds && me.partnerIds.length > 0 && !this.state.isPartner && (
-        <div>
-          <h3>Partners: </h3>
-          <ul>
-            <ul>
-              {me.partnerIds.map(partnerId => <li key={partnerId}>
-                <Person people={this.state.people} id={partnerId} isPartner />
-              </li>
-              )}
-            </ul>
-          </ul>
-        </div>
-
-      )}
-      {me.childrenIds && me.childrenIds.length > 0 && !this.state.isPartner && (
-        <div>
-          <h3>Children: </h3>
-          <ul>
-            {me.childrenIds.map(childId => <li key={childId}>
-              <Person people={this.state.people} id={childId} />
-            </li>
-            )}
-          </ul>
-        </div>
+      {this.state.selected && !myPartner &&
+        <AddRelationship addRelationship={(name) => {
+          this.props.addRelationship(name, this.props.id)
+          this.setState({ selected: false })
+        }} />
+      }
+      {myPartner && (
+        <Relationship people={this.props.people} owner={me} partner={myPartner} addChild={this.props.addChild} childrenIds={me.childrenIds} addPerson={this.props.addPerson} addRelationship={this.props.addRelationship} />
       )}
     </div>
   }

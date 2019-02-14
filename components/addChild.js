@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-class AddRelationship extends Component {
+class AddChild extends Component {
   constructor (props) {
     super(props)
     this.state = { value: '' }
@@ -13,7 +13,7 @@ class AddRelationship extends Component {
   }
 
   handleSubmit (event) {
-    this.props.addRelationship(this.state.value)
+    this.props.addChild(this.state.value)
     event.preventDefault()
   }
 
@@ -21,7 +21,7 @@ class AddRelationship extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
-          In a relatinship with:
+          Child's Name:
           <input type='text' value={this.state.value} onChange={this.handleChange} />
         </label>
         <input type='submit' value='Submit' />
@@ -30,4 +30,4 @@ class AddRelationship extends Component {
   }
 }
 
-export default AddRelationship
+export default AddChild

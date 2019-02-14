@@ -7,37 +7,44 @@ class App extends Component {
     super(props)
     this.state = { people: [] }
     this.addPerson = this.addPerson.bind(this)
+    this.addRelationship = this.addRelationship.bind(this)
+    this.addChild = this.addChild.bind(this)
   }
 
-  addPerson (person) {
+  addPerson (name) {
     var people = this.state.people
 
     // assumes people are sorted by id, lowest to highest.
     var nextId = people.length + 1
-    people.push({ id: nextId, name: person })
+    people.push({ id: nextId, name, childrenIds: [] })
     this.setState({ people })
   }
-  //    this.state = { people: [
-  //
-  //      { id: 1, name: 'Ali', relationship: [{ withId: 8, childrenIds: [2, 3] }] },
-  //      { id: 2, name: 'Piet', childrenIds: [], partnerIds: [7] },
-  //      { id: 3, name: 'Smith', childrenIds: [4, 5], partnerIds: [6] },
-  //      { id: 4, name: 'Otis', childrenIds: [] },
-  //      { id: 5, name: 'Ted', childrenIds: [] },
-  //      { id: 6, name: 'Holly', childredIds: [4, 5], partnerIds: [3] },
-  //      { id: 7, name: 'Katie', childredIds: [], partnerIds: [2] },
-  //      { id: 8, name: 'Walt', childredIds: [], partnerIds: [2] }
-  //
-  //    ]
-  //    }
-  //  }
+  addRelationship (name, inRelationshipWithId) {
+    var people = this.state.people
+    var nextId = people.length + 1
+    people.push({ id: nextId, name, childrenIds: [] })
+
+    people[inRelationshipWithId - 1].partnerId = nextId
+
+    this.setState({ people })
+  }
+  addChild (name, parentId) {
+    var people = this.state.people
+    var nextId = people.length + 1
+    people.push({ id: nextId, name, childrenIds: [] })
+
+    people[parentId - 1].childrenIds.push(nextId)
+
+    this.setState({ people })
+  }
 
   render () {
     return <div>
-      <h1>Welcome to {this.props.name}</h1>
+      <h1>Whakapapa</h1>
+      <div>Click on a name to add..</div>
       {this.state.people.length === 0
         ? <AddPerson addPerson={this.addPerson} />
-        : <Person people={this.state.people} id={1} />
+        : <Person people={this.state.people} id={1} addRelationship={this.addRelationship} addChild={this.addChild} />
       }
     </div>
   }
